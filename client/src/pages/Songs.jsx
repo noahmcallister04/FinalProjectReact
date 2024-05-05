@@ -20,11 +20,12 @@ const Songs = () => {
   const handleDelete = async (id) => {
     try {
       await axios.delete(`http://localhost:3500/songs/${id}`);
-      window.location.reload();
+      setSongs(songs.filter(song => song.id !== id)); // Update state after successful deletion
     } catch (err) {
       console.log(err);
     }
   };
+  
 
   return (
     <div>
@@ -35,14 +36,6 @@ const Songs = () => {
             <p>{song.artist}</p>
             <button className="delete" onClick={() => handleDelete(song.id)}>
               Delete
-            </button>
-            <button className="update">
-              <Link
-                to={`/update/${song.id}`}
-                style={{ color: "inherit", textDecoration: "none" }}
-              >
-                Update
-              </Link>
             </button>
           </div>
         ))}

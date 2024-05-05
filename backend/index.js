@@ -48,6 +48,16 @@ app.get("/songs", (req, res) => {
     });
 });
 
+app.delete("/songs/:id", (req, res)=>{
+    const songId = req.params.id;
+    const q = "DELETE FROM songs WHERE id = ?"
+    
+    db.query(q,[songId], (err,data)=>{
+        if (err) return res.json(err);
+        return res.json("Song has been deleted successfully!");        
+    })
+})
+
 app.listen(3500, () => {
     console.log("Connected to backend!");
 });
