@@ -10,6 +10,8 @@ const db = mysql.createConnection({
     database:"finalproject"
 })
 
+app.use(express.json())
+
 app.get("/", (req, res)=>{
     res.json("hello this is the backend")
 })
@@ -19,6 +21,19 @@ app.get("/songs", (req, res)=>{
     db.query(q,(err,data)=>{
         if(err) return res.json(err)
         return res.json(data)
+    })
+})
+
+app.post("/songs", (req,res)=>{
+    const q = "INSERT INTO books ('title','artist') VALUES (?)"
+    const values = [
+        req.body.title,
+        req/body.artist,
+    ];
+
+    db.query(q, [values], (err,data)=>{
+        if(err) return res.json(err)
+        return res.json("Song has been created successfully!")   
     })
 })
 
