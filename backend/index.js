@@ -7,7 +7,7 @@ const app = express();
 const db = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "root",
+    password: "password",
     database: "finalproject",
     port: 3306
 });
@@ -37,6 +37,14 @@ app.post("/songs", (req, res) => {
     db.query(q, values, (err, data) => {
         if (err) return res.json(err);
         return res.json("Song has been created successfully!");
+    });
+});
+
+app.get("/songs", (req, res) => {
+    const q = "SELECT * FROM songs WHERE title IS NOT NULL AND artist IS NOT NULL";
+    db.query(q, (err, data) => {
+        if (err) return res.json(err);
+        return res.json(data);
     });
 });
 
