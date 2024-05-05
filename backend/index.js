@@ -4,9 +4,16 @@ import cors from "cors"
 
 
 const app = express();
+const connection = mysql.createConnection({
+  host: process.env.DATABASE_HOST,  // Ensure this is not hardcoded to 127.0.0.1
+  user: process.env.DATABASE_USER,
+  password: process.env.DATABASE_PASSWORD,
+  database: process.env.DATABASE_NAME
+});
+
 
 const db = mysql.createConnection({
-    host: "localhost",
+    host: "db",
     user: "root",
     password: "root",
     database: "finalproject",
@@ -20,7 +27,17 @@ app.get("/", (req, res) => {
     res.json("hello this is the backend");
 });
 
-app.get("/songs", (req, res) => {
+connection.connect(err => {
+    if (err) {
+      console.error('Failed to connect to database:', err);
+      return;
+    }
+    console.log('Successfully connected to the database.');
+  });
+  
+  connection.end();
+
+  app.get("/songs", (req, res) => {
     const q = "SELECT * FROM songs";
     db.query(q, (err, data) => {
         if (err) return res.json(err);
@@ -62,3 +79,17 @@ app.delete("/songs/:id", (req, res)=>{
 app.listen(3500, () => {
     console.log("Connected to backend!");
 });
+
+function connectWithRetry() {
+    connection.connect(err => {
+      if (err) {
+        console.error('Failed to connect to MySQL - retrying in 5 sec', err);
+        setTimeout(connectWithRetry, 5000);
+      } else {
+        console.log('Successfully connected to MySQL');
+      }
+    });
+  }
+  
+  connectWithRetry();
+  

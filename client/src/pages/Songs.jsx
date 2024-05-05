@@ -47,7 +47,6 @@ const Songs = () => {
                             <td>{song.artist}</td>
                             <td>
                                 <button className="btn btn-danger" onClick={() => handleDelete(song.id)}>Delete</button>
-                                <Link to={`/update/${song.id}`} className="btn btn-warning ml-2">Update</Link>
                             </td>
                         </tr>
                     ))}
