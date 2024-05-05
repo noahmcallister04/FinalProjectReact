@@ -1,14 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; // Assuming you are using React Router
+import { useNavigate } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 const Add = () => {
-    const [song, setSong] = useState({
-        title: "",
-        artist: ""
-    });
-
-    const navigate = useNavigate(); // Fixed typo in variable name
+    const [song, setSong] = useState({ title: "", artist: "" });
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         setSong(prev => ({ ...prev, [e.target.name]: e.target.value }));
@@ -18,20 +16,24 @@ const Add = () => {
         e.preventDefault();
         try {
             await axios.post("http://localhost:3500/songs", song);
-            navigate("/"); // Corrected variable name and added forward slash
+            navigate("/");
         } catch (err) {
             console.log(err);
         }
     };
 
-    console.log(song);
-
     return (
-        <div className='form'>
+        <div className='container mt-3'>
             <h2>Add New Song</h2>
-            <input type="text" placeholder="title" onChange={handleChange} name="title" />
-            <input type="text" placeholder="artist" onChange={handleChange} name="artist" />
-            <button onClick={handleClick}>Add</button>
+            <form>
+                <div className="form-group">
+                    <input type="text" className="form-control" placeholder="Title" name="title" value={song.title} onChange={handleChange} />
+                </div>
+                <div className="form-group">
+                    <input type="text" className="form-control" placeholder="Artist" name="artist" value={song.artist} onChange={handleChange} />
+                </div>
+                <button className="btn btn-primary" onClick={handleClick}>Add</button>
+            </form>
         </div>
     );
 };

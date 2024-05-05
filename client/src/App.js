@@ -1,6 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Songs from "./pages/Songs";
 import Add from "./pages/Add";
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 
 function App() {

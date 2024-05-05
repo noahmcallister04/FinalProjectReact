@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+
 
 const Songs = () => {
     const [songs, setSongs] = useState([]);
@@ -20,7 +23,7 @@ const Songs = () => {
     const handleDelete = async (id) => {
         try {
             await axios.delete(`http://localhost:3500/songs/${id}`);
-            setSongs(songs.filter(song => song.id !== id)); // Update state after successful deletion
+            setSongs(songs.filter(song => song.id !== id));
         } catch (err) {
             console.log(err);
         }
@@ -29,8 +32,8 @@ const Songs = () => {
     return (
         <div className="container mt-3">
             <h2>Songs List</h2>
-            <table className="table table-striped">
-                <thead>
+            <table className="table table-hover">
+                <thead className="thead-dark">
                     <tr>
                         <th>Title</th>
                         <th>Artist</th>
@@ -43,21 +46,14 @@ const Songs = () => {
                             <td>{song.title}</td>
                             <td>{song.artist}</td>
                             <td>
-                                <button className="btn btn-danger" onClick={() => handleDelete(song.id)}>
-                                    Delete
-                                </button>
-                                <Link to={`/update/${song.id}`} className="btn btn-primary ml-2">
-                                    Update
-                                </Link>
+                                <button className="btn btn-danger" onClick={() => handleDelete(song.id)}>Delete</button>
+                                <Link to={`/update/${song.id}`} className="btn btn-warning ml-2">Update</Link>
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
-
-            <Link to="/add" className="btn btn-success">
-                Add New Song
-            </Link>
+            <Link to="/add" className="btn btn-success">Add New Song</Link>
         </div>
     );
 };
